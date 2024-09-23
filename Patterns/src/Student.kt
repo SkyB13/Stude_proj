@@ -59,4 +59,11 @@ class Student(
         git?.let { validateGit(it) }
         git = value
     }
+
+    override fun toString(): String {
+        return """
+            Student(id=$id, birthDate=$birthDate, lastName='$lastName', firstName='$firstName', middleName=${middleName ?: ""}, 
+             phone=${phone ?: ""}, telegram=${telegram ?: ""}, email=${email ?: ""}, git=${git ?: ""})
+        """.trimIndent()
+    }
 }
