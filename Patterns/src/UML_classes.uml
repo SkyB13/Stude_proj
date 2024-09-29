@@ -1,0 +1,50 @@
+@startuml
+skinparam backgroundColor #EEEBDC
+skinparam handwritten true
+
+class Student {
+    - id: UUID
+    - birthDate: LocalDate
+    - lastName: String
+    - firstName: String
+    - middleName: String?
+    - phone: String?
+    - telegram: String?
+    - email: String?
+    - git: String?
+
+    + constructor(id: UUID, birthDate: LocalDate, lastName: String, firstName: String, middleName: String? = null, phone: String? = null, telegram: String? = null, email: String? = null, git: String? = null)
+
+    + validatePhone(phone: String?)
+    + validateEmail(email: String?)
+    + validateGit(git: String?)
+
+    + setTelegram(value: String?)
+    + setEmail(value: String?)
+    + setGit(value: String?)
+
+    + toString(): String
+
+    + setContacts(phone: String? = this.phone, telegram: String? = this.telegram, email: String? = this.email, git: String? = this.git)
+
+    + companion object {
+        + isValidPhone(phone: String?): Boolean
+        + validateEmail(email: String?)
+        + validateGit(git: String?)
+        + validate(student: Student): Boolean
+    }
+}
+
+class Main {
+    + main()
+}
+
+Student "1" --> "1..*" ContactType : Uses
+
+enum ContactType {
+    TELEGRAM
+    EMAIL
+    GIT
+}
+
+@enduml
