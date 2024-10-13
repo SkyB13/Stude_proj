@@ -2,12 +2,14 @@
 import java.time.LocalDate
 import java.util.*
 
+//создание класса
 class Person(
     val name: String,
     val age: Int,
     val birthDate: LocalDate
 ) {
     companion object {
+        //Добавление парса
         fun parseFromString(input: String): Person {
             try {
                 val parts = input.split(',')
@@ -29,12 +31,13 @@ class Person(
                 }
 
                 return Person(name, age, birthDate)
-            } catch (e: Exception) {
+            } 
+            //"Отлов" исключений
+            catch (e: Exception) {
                 throw ParsingException("Ошибка при парсинге строки")
             }
         }
     }
-
 
     override fun toString(): String {
         return "Person (name: '$name', age: $age, birthDate: $birthDate)"
