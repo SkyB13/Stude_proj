@@ -2,14 +2,12 @@
 import java.time.LocalDate
 import java.util.*
 
-//создание класса
 class Person(
     val name: String,
     val age: Int,
     val birthDate: LocalDate
 ) {
     companion object {
-        //Добавление парса
         fun parseFromString(input: String): Person {
             try {
                 val parts = input.split(',')
@@ -31,18 +29,34 @@ class Person(
                 }
 
                 return Person(name, age, birthDate)
-            } 
-            //"Отлов" исключений
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 throw ParsingException("Ошибка при парсинге строки")
             }
         }
     }
 
+    // Вспомогательный метод для получения фамилии
+    private fun getSurname(): String {
+        return name.split(" ")[1]
+    }
+
+    // Вспомогательный метод для получения инициалов
+    private fun getInitials(): String {
+        val parts = name.split(" ")
+        return "${parts[0][0]}. ${parts[1][0]}."
+    }
+
+    // Основной метод для возвращения краткой информации
+    fun getInfo(): String {
+        val surname = getSurname()
+        val initials = getInitials()
+        val contact = "email: john.doe@example.com" // Пример контактного средства
+        return "$surname $initials, $contact"
+    }
+
     override fun toString(): String {
         return "Person (name: '$name', age: $age, birthDate: $birthDate)"
     }
-
 
 }
 
