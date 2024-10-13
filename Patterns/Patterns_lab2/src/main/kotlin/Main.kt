@@ -2,9 +2,9 @@ import java.time.LocalDate
 import java.util.*
 
 fun main() {
-    // Тестирование нового конструктора
-    val personFromString = Person.parseFromString("John Doe, 30, 1990-01-01")
-    println(personFromString)
+    // Тестирование нового конструктора c разделением данных (getInfo, задание №3)
+    val person = Person.parseFromString("John Doe, 30, 1990-01-01")
+    println(person.getInfo())
 
     // Тестирование стандартного конструктора
     val personWithParams = Person("Jane Smith", 25, LocalDate.of(1995, 6, 15))
