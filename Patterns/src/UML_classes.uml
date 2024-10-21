@@ -1,50 +1,30 @@
 @startuml
-skinparam backgroundColor #EEEBDC
-skinparam handwritten true
-
 class Student {
     - id: UUID
     - birthDate: LocalDate
     - lastName: String
     - firstName: String
-    - middleName: String?
-    - phone: String?
-    - telegram: String?
-    - email: String?
-    - git: String?
+    - middleName: String
+    - telPhone: String
+    - email: String
+    - git: String
+    - telegram: String
 
-    + constructor(id: UUID, birthDate: LocalDate, lastName: String, firstName: String, middleName: String? = null, phone: String? = null, telegram: String? = null, email: String? = null, git: String? = null)
-
-    + validatePhone(phone: String?)
-    + validateEmail(email: String?)
-    + validateGit(git: String?)
-
-    + setTelegram(value: String?)
-    + setEmail(value: String?)
-    + setGit(value: String?)
-
+    + getId(): UUID
+    + setBirthDate(LocalDate): void
+    + setLastName(String): void
+    + setFirstName(String): void
+    + setMiddleName(String): void
+    + setTelPhone(String): void
+    + setEmail(String): void
+    + setGit(String): void
+    + setTelegram(String): void
     + toString(): String
 
-    + setContacts(phone: String? = this.phone, telegram: String? = this.telegram, email: String? = this.email, git: String? = this.git)
-
-    + companion object {
-        + isValidPhone(phone: String?): Boolean
-        + validateEmail(email: String?)
-        + validateGit(git: String?)
-        + validate(student: Student): Boolean
-    }
-}
-
-class Main {
-    + main()
-}
-
-Student "1" --> "1..*" ContactType : Uses
-
-enum ContactType {
-    TELEGRAM
-    EMAIL
-    GIT
+    + isValidPhone(phone: String): boolean
+    + validateEmail(email: String): void
+    + validateGit(git: String): void
+    + validateTelegram(telegram: String): void
 }
 
 @enduml
