@@ -1,34 +1,41 @@
-class Student_short(
-    val id: Int,
-    val surname: String,
-    val initials: String,
-    val contact: String
-) {
-    // Конструктор, принимающий объект класса Student
-    constructor(student: Student) : this(
-        id = student.id,
-        surname = student.surname,
-        initials = student.initials,
-        contact = student.contact
-    )
+package main.kotlin
 
-    // Конструктор, принимающий ID и строку с информацией
-    constructor(id: Int, info: String) : this(
-        id = id,
-        surname = info.split(",")[0].trim(),
-        initials = info.split(",")[1].trim(),
-        contact = info.split(",")[2].trim()
-    )
+class Student_short : StudentInfo {
+    var fullName: String? = null
+        set(value) {
+            field = value
+        }
+        get() {
+            return field
+        }
+    var contact: String? = null
+        set(value) {
+            field = value
+        }
+        get() {
+            return field
+        }
+
+    constructor(student: Student) {
+        id = id
+        fullName = student.getFullName()
+        git = student.getGitLink()
+        contact = student.getContactInfo()
+    }
+
+    constructor(input: String) {
+        id = id_student
+        fullName = input.split(" ").getOrNull(0)
+        git = input.split(" ").getOrNull(1)
+        contact = input.split(" ").getOrNull(2)
+    }
 
     override fun toString(): String {
-        return "Student_short(id=$id, surname='$surname', initials='$initials', contact='$contact')"
+        return """
+            ID: $id
+            ���: $fullName
+            GitHub: $git
+            �������: $contact
+        """.trimIndent()
     }
 }
-
-// Предположим, у нас есть класс Student для использования в первом конструкторе
-class Student(
-    val id: Int,
-    val surname: String,
-    val initials: String,
-    val contact: String
-)
