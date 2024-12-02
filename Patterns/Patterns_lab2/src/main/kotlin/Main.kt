@@ -1,65 +1,88 @@
-import main.kotlin.Data_table
-import main.kotlin.Data_list_student_short
-import main.kotlin.Student
-import main.kotlin.Student_short
+package main.kotlin
+
+import java.io.File
 
 fun main() {
-    val student1 = Student(
-        "Спиридонов",
-        "Данил",
-        "Александрович",
-        "+79887564587",
-        "@streleckiio",
-        "streleckiio@example.com",
-        "https://github.com/SoldDA"
-    )
+//    // Работа с файлом YAML
+//    val studentsListYAML = Students_list_YAML("stud.yaml")
+//
+//    // Вывод содержимого файла YAML
+//    println("Содержимое файла stud.yaml:")
+//    studentsListYAML.students.forEach { student ->
+//        println(student)
+//    }
+//
+//    // Пример добавления нового студента
+//    val newStudentYAML = Student("Иванов", "Иван", "Иванович", "+79001234567", "@ivanov", "ivanov@mail.ru", "https://github.com/ivanov")
+//    studentsListYAML.addStudent(newStudentYAML)
+//    studentsListYAML.saveToFile() // Сохранение изменений в файл YAML
+//
+//    // Получение студента по ID
+//    val studentYAML = studentsListYAML.getStudentById(1) // Замените "1" на реальный ID
+//    println("Студент с ID 1 (из YAML):")
+//    println(studentYAML)
+//
+//
+//
+//    // Работа с файлом TXT
+//    val txtFilePath = "Students_3.txt" // Убедитесь, что файл находится по этому пути
+//    val studentsListTXT = Students_list_txt(txtFilePath)
+//
+//    // Проверка на существование файла
+//    if (File(txtFilePath).exists()) {
+//        // Вывод содержимого файла TXT
+//        println("Содержимое файла Students_3.txt:")
+//        studentsListTXT.getStudentShortList().forEach { student ->
+//            println(student)
+//        }
+//
+//        // Пример добавления нового студента в TXT
+//        val newStudentTXT = Student("Петрова", "Анна", "Сергеевна", "+79001234568", "@petrov", "petrova@mail.ru", "https://github.com/petrova")
+//        studentsListTXT.addStudent(newStudentTXT)
+//        studentsListTXT.saveToFile() // Сохранение изменений в файл TXT
+//
+//        // Вывод краткого списка студентов из TXT файла
+//        println("Краткий список студентов из TXT файла:")
+//        studentsListTXT.get_k_n_student_short_list(1, 5).data.forEach {
+//            println(it)
+//        }
+//    } else {
+//        println("Файл не найден: $txtFilePath")
+//    }
 
-    val student2 = Student(
-        "Иванова",
-        "Виктория",
-        "Александровна"
-    )
 
-    println("Информация о студентах:")
-    println(student1.toString() + "\n")
-    println(student2.toString() + "\n")
-    student2.setContacts("12345678910", "@kashpo", "kashpo@mail.ru")
-    println(student2.toString() + "\n")
+    // Работа с JSON файлом
+    val jsonFilePath = "Student_3_js.json"
+    val studentsListJSON = StudentsListJSON(jsonFilePath)
 
-    // laba_2
-
-    val studentString = "Спиридонов Данил Александрович 79833256191 @danya_sp streleckiy.io@mail.ru https://github.com/SolDA"
-
-    val student = Student(studentString)
-    println(student.toString() + "\n")
-    println(student.getInfo())
-    println("\nРазделение на составляющие:")
-    println("Full Name: ${student.getFullName()}")
-    println("GitHub Link: ${student.getGitLink()}")
-    println("Contact Info: ${student.getContactInfo()}\n")
-
-    var Danil_short = Student_short(student1)
-    println(Danil_short.toString())
-
-    println("\nЗапись и чтение")
-    var studentList = Student.readFile("D:/Pattern/Lab2/src/input.txt")
-    for (stud in studentList) println(student)
-    Student.writeFile("D:/Pattern/Lab2/src/output.txt", studentList)
-
-    println("\nData_Table\n")
-    var elem = Data_table(mutableListOf(mutableListOf(15, 23, 8), mutableListOf(16, 24, 9), mutableListOf("One", "Two", "Three")))
-    println(elem.getElementByNumber(0, 1))
-    println(elem.getRows())
-    println(elem.getColumns())
-    var new_list_student = Data_list_student_short(mutableListOf(Student_short(student1), Student_short(student2), Student_short(studentString)))
-    new_list_student.select(1)
-    new_list_student.select(2)
-    var new_table_student = new_list_student.getTable()
-    for (i in 0..new_table_student.getRows() - 1) {
-        for (j in 0..new_table_student.getColumns() - 1) {
-            print(new_table_student.getElementByNumber(i, j))
-            println(" ")
+    // Проверка на существование файла
+    if (File(jsonFilePath).exists()) {
+        // Вывод содержимого файла JSON
+        println("Содержимое файла Student_3_js.json:")
+        studentsListJSON.getStudentShortList().forEach { student ->
+            println(student)
         }
-        println()
+
+        // Пример добавления нового студента в JSON
+        val newStudentJSON = Student_list_json(
+            id = 0, // ID будет автоматически установлен при добавлении
+            lastName = "Петрова",
+            firstName = "Анна",
+            middleName = "Сергеевна",
+            phone = "+79001234568",
+            telegram = "@petrov",
+            email = "petrova@mail.ru",
+            git = "https://github.com/petrova"
+        )
+        studentsListJSON.addStudent(newStudentJSON)
+        studentsListJSON.saveToFile() // Сохранение изменений в файл JSON
+
+        // Вывод обновленного списка после добавления
+        println("\nОбновленный список после добавления:")
+        studentsListJSON.getStudentShortList().forEach { student ->
+            println(student)
+        }
+    } else {
+        println("Файл не найден: $jsonFilePath")
     }
 }

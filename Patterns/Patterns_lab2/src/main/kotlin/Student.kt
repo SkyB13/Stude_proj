@@ -140,7 +140,7 @@ class Student : StudentInfo {
         git = hashStudent.getOrDefault("github", null).toString()
     }
 
-    // Конструктор принимающий строку и парсинг её
+    // Конструктор принимающий строку и парсит её
     constructor(input:String): this (input.split(" ")[0],input.split(" ")[1],input.split(" ")[2],input.split(" ").getOrNull(3),input.split(" ").getOrNull(4),input.split(" ").getOrNull(5),input.split(" ").getOrNull(6))
     {
 

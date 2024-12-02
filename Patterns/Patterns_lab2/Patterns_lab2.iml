@@ -11,5 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" name="buschmais.jqassistant.plugin.yaml" level="project" />
+    <orderEntry type="library" name="google.api.client" level="project" />
   </component>
 </module>
