@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "lastName": "Иванова",
+    "firstName": "Анастасия",
+    "middleName": "Владимировна",
+    "phone": "+79009876543",
+    "telegram": "@ivanova",
+    "email": "ivanova@example.com",
+    "git": "https://github.com/ivanova"
+  },
+  {
+    "id": 1,
+    "lastName": "Петров",
+    "firstName": "Пётр",
+    "middleName": "Петрович",
+    "phone": "0987654321"
+  },
+  {
+    "id": 1,
+    "lastName": "Петров",
+    "firstName": "Пётр",
+    "middleName": "Петрович",
+    "phone": "0987654321"
+  }
+]

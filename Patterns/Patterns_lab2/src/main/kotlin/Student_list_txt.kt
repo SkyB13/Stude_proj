@@ -1,75 +1,47 @@
 package main.kotlin
 
 import java.io.File
-import java.io.FileNotFoundException
-import java.io.IOException
 
-class Students_list_txt(private val filePath: String) {
-    private val students: MutableList<Student> = mutableListOf()
+class Student_list_txt : Student_Strategy<Student> {
+    private val filePath = "Student_txt_superclass.txt"
 
-    init {
-        loadFromFile()
-    }
-
-    private fun loadFromFile() {
-        val file = File(filePath)
-        try {
-            file.readLines().forEach { line ->
-                students.add(Student(line))
+    override fun loadStudents(): List<Student> {
+        return File(filePath).readLines().mapNotNull { line ->
+            try {
+                // Assuming Student constructor takes id, name, and age
+                val fields = line.split(',')
+                if (fields.size >= 3) {
+                    Student(fields[0], fields[1], fields[2])
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                println("Error parsing student: $line")
+                null
             }
-        } catch (e: FileNotFoundException) {
-            println("Файл не найден: ${e.message}")
-        } catch (e: IOException) {
-            println("Ошибка чтения файла: ${e.message}")
         }
     }
 
-    fun saveToFile() {
-        val file = File(filePath)
-        val text = students.joinToString("\n") { it.toString() }
-        file.writeText(text)
+    override fun saveStudents(students: List<Any>) {
+        File(filePath).writeText(students.joinToString("\n"))
     }
 
-    fun getStudentById(id: Int): Student? {
-        return students.find { it.id == id }
+    override fun addStudent(student: Student) {
+        File(filePath).appendText("\n${student.toString()}")
     }
 
-    fun get_k_n_student_short_list(k: Int, n: Int): Data_table {
-        val shortList = students.drop((k - 1) * n).take(n).map { student ->
-            listOf(student.lastName, student.firstName, student.middleName)
+    override fun removeStudent(id: Int) {
+        val students = loadStudents()
+        val filtered = students.filter { it.id != id }
+        saveStudents(filtered)
+    }
+
+    override fun updateStudent(id: Int, student: Student) {
+        val students = loadStudents().map { s ->
+            if (s.id == id) student else s
         }
-        return Data_table(shortList)
-    }
-
-    fun sortStudents() {
-        students.sortWith(compareBy(
-            { it.lastName },
-            { it.firstName[0] },
-            { it.middleName.takeIf { it.isNotEmpty() }?.get(0) ?: ' ' }
-        ))
-    }
-
-    fun addStudent(student: Student) {
-        student.id = ++StudentInfo.id_student
-        students.add(student)
-    }
-
-    fun replaceStudentById(id: Int, student: Student) {
-        val index = students.indexOfFirst { it.id == id }
-        if (index >= 0) {
-            students[index] = student.apply { this.id = id } // Устанавливаем ID для нового студента
-        }
-    }
-
-    fun removeStudentById(id: Int) {
-        students.removeIf { it.id == id }
-    }
-
-    fun get_student_short_count(): Int {
-        return students.size
-    }
-
-    fun getStudentShortList(): List<Student> {
-        return students
+        saveStudents(students)
     }
 }
+
+

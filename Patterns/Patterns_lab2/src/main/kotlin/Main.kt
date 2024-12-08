@@ -1,88 +1,82 @@
-package main.kotlin
-
-import java.io.File
+import main.kotlin.*
+import main.kotlin.Student_list_YAML
+import main.kotlin.JsonStudentStorageStrategy
+import main.kotlin.Student_list_txt
 
 fun main() {
-//    // Р Р°Р±РѕС‚Р° СЃ С„Р°Р№Р»РѕРј YAML
-//    val studentsListYAML = Students_list_YAML("stud.yaml")
-//
-//    // Р’С‹РІРѕРґ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С„Р°Р№Р»Р° YAML
-//    println("РЎРѕРґРµСЂР¶РёРјРѕРµ С„Р°Р№Р»Р° stud.yaml:")
-//    studentsListYAML.students.forEach { student ->
-//        println(student)
-//    }
-//
-//    // РџСЂРёРјРµСЂ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СЃС‚СѓРґРµРЅС‚Р°
-//    val newStudentYAML = Student("РРІР°РЅРѕРІ", "РРІР°РЅ", "РРІР°РЅРѕРІРёС‡", "+79001234567", "@ivanov", "ivanov@mail.ru", "https://github.com/ivanov")
-//    studentsListYAML.addStudent(newStudentYAML)
-//    studentsListYAML.saveToFile() // РЎРѕС…СЂР°РЅРµРЅРёРµ РёР·РјРµРЅРµРЅРёР№ РІ С„Р°Р№Р» YAML
-//
-//    // РџРѕР»СѓС‡РµРЅРёРµ СЃС‚СѓРґРµРЅС‚Р° РїРѕ ID
-//    val studentYAML = studentsListYAML.getStudentById(1) // Р—Р°РјРµРЅРёС‚Рµ "1" РЅР° СЂРµР°Р»СЊРЅС‹Р№ ID
-//    println("РЎС‚СѓРґРµРЅС‚ СЃ ID 1 (РёР· YAML):")
-//    println(studentYAML)
-//
-//
-//
-//    // Р Р°Р±РѕС‚Р° СЃ С„Р°Р№Р»РѕРј TXT
-//    val txtFilePath = "Students_3.txt" // РЈР±РµРґРёС‚РµСЃСЊ, С‡С‚Рѕ С„Р°Р№Р» РЅР°С…РѕРґРёС‚СЃСЏ РїРѕ СЌС‚РѕРјСѓ РїСѓС‚Рё
-//    val studentsListTXT = Students_list_txt(txtFilePath)
-//
-//    // РџСЂРѕРІРµСЂРєР° РЅР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ С„Р°Р№Р»Р°
-//    if (File(txtFilePath).exists()) {
-//        // Р’С‹РІРѕРґ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С„Р°Р№Р»Р° TXT
-//        println("РЎРѕРґРµСЂР¶РёРјРѕРµ С„Р°Р№Р»Р° Students_3.txt:")
-//        studentsListTXT.getStudentShortList().forEach { student ->
-//            println(student)
-//        }
-//
-//        // РџСЂРёРјРµСЂ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СЃС‚СѓРґРµРЅС‚Р° РІ TXT
-//        val newStudentTXT = Student("РџРµС‚СЂРѕРІР°", "РђРЅРЅР°", "РЎРµСЂРіРµРµРІРЅР°", "+79001234568", "@petrov", "petrova@mail.ru", "https://github.com/petrova")
-//        studentsListTXT.addStudent(newStudentTXT)
-//        studentsListTXT.saveToFile() // РЎРѕС…СЂР°РЅРµРЅРёРµ РёР·РјРµРЅРµРЅРёР№ РІ С„Р°Р№Р» TXT
-//
-//        // Р’С‹РІРѕРґ РєСЂР°С‚РєРѕРіРѕ СЃРїРёСЃРєР° СЃС‚СѓРґРµРЅС‚РѕРІ РёР· TXT С„Р°Р№Р»Р°
-//        println("РљСЂР°С‚РєРёР№ СЃРїРёСЃРѕРє СЃС‚СѓРґРµРЅС‚РѕРІ РёР· TXT С„Р°Р№Р»Р°:")
-//        studentsListTXT.get_k_n_student_short_list(1, 5).data.forEach {
-//            println(it)
-//        }
-//    } else {
-//        println("Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ: $txtFilePath")
-//    }
+    // Работа с YAML файлом
+    val yamlStudents = Student_list_YAML("students.yaml")
+
+    println("Студенты из YAML:")
+    yamlStudents.students.forEach { println(it) }
+
+    // Добавление нового студента в YAML
+    val student_yaml = Student("Иванов", "Иван", "Иванович", "1234567890", null, null, null)
+    student_yaml.id = 1
+    yamlStudents.addStudent(student_yaml)
 
 
-    // Р Р°Р±РѕС‚Р° СЃ JSON С„Р°Р№Р»РѕРј
-    val jsonFilePath = "Student_3_js.json"
-    val studentsListJSON = StudentsListJSON(jsonFilePath)
+    // Сохранение изменений в YAML
+    yamlStudents.saveToFile()
 
-    // РџСЂРѕРІРµСЂРєР° РЅР° СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ С„Р°Р№Р»Р°
-    if (File(jsonFilePath).exists()) {
-        // Р’С‹РІРѕРґ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ С„Р°Р№Р»Р° JSON
-        println("РЎРѕРґРµСЂР¶РёРјРѕРµ С„Р°Р№Р»Р° Student_3_js.json:")
-        studentsListJSON.getStudentShortList().forEach { student ->
-            println(student)
-        }
+    println("\n")
 
-        // РџСЂРёРјРµСЂ РґРѕР±Р°РІР»РµРЅРёСЏ РЅРѕРІРѕРіРѕ СЃС‚СѓРґРµРЅС‚Р° РІ JSON
-        val newStudentJSON = Student_list_json(
-            id = 0, // ID Р±СѓРґРµС‚ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё СѓСЃС‚Р°РЅРѕРІР»РµРЅ РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё
-            lastName = "РџРµС‚СЂРѕРІР°",
-            firstName = "РђРЅРЅР°",
-            middleName = "РЎРµСЂРіРµРµРІРЅР°",
-            phone = "+79001234568",
-            telegram = "@petrov",
-            email = "petrova@mail.ru",
-            git = "https://github.com/petrova"
-        )
-        studentsListJSON.addStudent(newStudentJSON)
-        studentsListJSON.saveToFile() // РЎРѕС…СЂР°РЅРµРЅРёРµ РёР·РјРµРЅРµРЅРёР№ РІ С„Р°Р№Р» JSON
+    // Работа с JSON файлом
+    val jsonStrategy = JsonStudentStorageStrategy()
+    val jsonManager = StudentManager(jsonStrategy)
 
-        // Р’С‹РІРѕРґ РѕР±РЅРѕРІР»РµРЅРЅРѕРіРѕ СЃРїРёСЃРєР° РїРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ
-        println("\nРћР±РЅРѕРІР»РµРЅРЅС‹Р№ СЃРїРёСЃРѕРє РїРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ:")
-        studentsListJSON.getStudentShortList().forEach { student ->
-            println(student)
-        }
-    } else {
-        println("Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ: $jsonFilePath")
-    }
+    println("Студенты из JSON:")
+    jsonManager.loadStudents().forEach { println(it) }
+
+    // Добавление нового студента в JSON
+    jsonManager.addStudent(Student_list_json(1, "Петров", "Пётр", "Петрович", "0987654321", null, null, null))
+
+    println("\n")
+
+    // Работа с TXT файлом
+    val txtStudents = Student_list_txt()
+
+    println("Студенты из TXT:")
+    txtStudents.loadStudents().forEach { println(it) }
+
+    // Добавление нового студента в TXT
+    val student_txt = Student("Иванов", "Иван", "Иванович", "1234567890", null, null, null)
+    student_txt.id = 1
+    yamlStudents.addStudent(student_txt)
+
+    println("\n")
+
+    // Демонстрация дополнительных функций YAML
+    println("Студент по ID из YAML:")
+    yamlStudents.getStudentById(1)?.let { println(it) }
+
+    println("\nСтраница 1 из 2 студентов в YAML:")
+    val shortList = yamlStudents.get_k_n_student_short_list(1, 2)
+    shortList.data.forEach { println(it.joinToString(", ")) }
+
+    println("\nСортировка студентов в YAML:")
+    yamlStudents.sortStudents()
+    yamlStudents.students.forEach { println(it) }
+
+    println("\nКоличество студентов в YAML:")
+    println(yamlStudents.get_student_short_count())
+
+    println("\nОбновление студента в YAML:")
+    val updatedStudent = Student(
+        // ID
+        "Иванов", // Фамилия
+        "Иван", // Имя
+        "Иванович", // Отчество
+        "1234567890", // Телефон
+        "ivanov_ii@university.ru", // E-mail (обновлено)
+        null, // Telegram (оставляем null)
+        null // GitHub (оставляем null)
+    )
+    yamlStudents.updateStudent(1, updatedStudent)
+    yamlStudents.students.forEach { println(it) }
+
+
+    println("\nУдаление студента из YAML:")
+    yamlStudents.removeStudentById(1)
+    yamlStudents.students.forEach { println(it) }
 }

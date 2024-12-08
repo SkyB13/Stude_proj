@@ -6,10 +6,16 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
-class Students_list_YAML(private val filePath: String) {
+class Student_list_YAML : Student_Strategy<Student>{
+    private var filePath = "Stud.yaml"
     val students: MutableList<Student> = mutableListOf()
 
     init {
+        loadFromFile()
+    }
+
+    constructor(filePath: String) {
+        this.filePath = filePath
         loadFromFile()
     }
 
@@ -17,7 +23,7 @@ class Students_list_YAML(private val filePath: String) {
         val file = File(filePath)
         try {
             val yaml = Yaml()
-            val data: List<Map<String, Any?>> = yaml.load(file.inputStream()) ?: emptyList()
+            val data: List<Map<String, Any>> = yaml.load(file.inputStream()) ?: emptyList()
             data.forEach { studentMap ->
                 students.add(Student(
                     studentMap["lastname"]?.toString() ?: "",
@@ -46,6 +52,7 @@ class Students_list_YAML(private val filePath: String) {
         })
         val data = students.map { student ->
             mapOf(
+                "id" to student.id,
                 "lastname" to student.lastName,
                 "firstname" to student.firstName,
                 "middlename" to student.middleName,
@@ -77,9 +84,10 @@ class Students_list_YAML(private val filePath: String) {
         ))
     }
 
-    fun addStudent(student: Student) {
-        student.id = ++StudentInfo.id_student
-        students.add(student)
+    override fun addStudent(student: Student) {
+        val castStudent = student as Student
+        castStudent.id = ++StudentInfo.id_student
+        students.add(castStudent)
     }
 
     fun replaceStudentById(id: Int, student: Student) {
@@ -96,4 +104,26 @@ class Students_list_YAML(private val filePath: String) {
     fun get_student_short_count(): Int {
         return students.size
     }
+
+    override fun loadStudents(): List<Student> {
+        return students
+    }
+
+    override fun saveStudents(students: List<Any>) {
+        this.students.clear()
+        this.students.addAll(students.map { it as Student })
+        saveToFile()
+    }
+
+    override fun removeStudent(id: Int) {
+        students.removeIf { it.id == id }
+    }
+
+    override fun updateStudent(id: Int, student: Student) {
+        val index = students.indexOfFirst { it.id == id }
+        if (index >= 0) {
+            students[index] = student.apply { this.id = id }
+        }
+    }
+
 }
