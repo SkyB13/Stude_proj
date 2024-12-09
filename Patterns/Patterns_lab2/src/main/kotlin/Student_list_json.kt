@@ -5,63 +5,40 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.io.File
 
-// Класс для описания студента
-data class Student_list_json(
-    var id: Int,
-    val lastName: String,
-    val firstName: String,
-    val middleName: String?,
-    val phone: String?,
-    val telegram: String?,
-    val email: String?,
-    val git: String?
-)
-
-// Упрощённая версия класса Student
-data class StudentShort(
-    val id: Int,
-    val initials: String
-)
-
-// Список данных
-data class DataList<T>(
-    val items: List<T>
-)
-
-class JsonStudentStorageStrategy : Student_Strategy<Student_list_json> {
+class JsonStudentStorageStrategy : StudentManager.Student_Strategy {
     private val filePath = "Student_json_superclass.json"
     private val gson = Gson()
 
-    override fun loadStudents(): List<Student_list_json> {
+    override fun loadStudents(): List<Student> {
         try {
             val file = File(filePath)
             if (!file.exists()) return emptyList()
 
             val gson = GsonBuilder().setPrettyPrinting().create()
             val json = file.readText()
-            return gson.fromJson(json, object : TypeToken<List<Student_list_json>>() {}.type)
+            return gson.fromJson(json, object : TypeToken<List<Student>>() {}.type)
         } catch (e: Exception) {
-            println("Ошибка при загрузке студентов: ${e.message}")
+            println("РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ СЃС‚СѓРґРµРЅС‚РѕРІ: ${e.message}")
             return emptyList()
         }
     }
 
-    override fun saveStudents(students: List<Any>) {
+    override fun saveStudents(students: List<Student>) {
         val json = gson.toJson(students)
         File(filePath).writeText(json)
     }
 
-    override fun addStudent(student: Student_list_json) {
-        val newStudent = student as Student_list_json
+    override fun addStudent(student: Student) {
+        val newStudent = student.apply { id = ++StudentInfo.id_student }
         val gson = GsonBuilder().setPrettyPrinting().create()
 
         try {
             val file = File(filePath)
-            var studentsList: MutableList<Student_list_json>
+            var studentsList: MutableList<Student>
 
             if (file.exists()) {
                 val json = file.readText()
-                studentsList = gson.fromJson(json, object : TypeToken<MutableList<Student_list_json>>() {}.type)
+                studentsList = gson.fromJson(json, object : TypeToken<MutableList<Student>>() {}.type)
             } else {
                 studentsList = mutableListOf()
             }
@@ -70,7 +47,7 @@ class JsonStudentStorageStrategy : Student_Strategy<Student_list_json> {
             val jsonOutput = gson.toJson(studentsList)
             file.writeText(jsonOutput)
         } catch (e: Exception) {
-            println("Ошибка при добавлении студента: ${e.message}")
+            println("РћС€РёР±РєР° РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё СЃС‚СѓРґРµРЅС‚Р°: ${e.message}")
         }
     }
 
@@ -79,12 +56,10 @@ class JsonStudentStorageStrategy : Student_Strategy<Student_list_json> {
         saveStudents(students)
     }
 
-    override fun updateStudent(id: Int, student: Student_list_json) {
+    override fun updateStudent(id: Int, student: Student) {
         val students = loadStudents().map { s ->
-            if (s.id == id) student else s
+            if (s.id == id) student.apply { this.id = id } else s
         }
         saveStudents(students)
     }
 }
-
-
