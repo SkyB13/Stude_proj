@@ -6,7 +6,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
-class Student_list_YAML : Student_Strategy<Student>{
+class Student_list_YAML : StudentManager.Student_Strategy {
     private var filePath = "Stud.yaml"
     val students: MutableList<Student> = mutableListOf()
 
@@ -14,7 +14,7 @@ class Student_list_YAML : Student_Strategy<Student>{
         loadFromFile()
     }
 
-    constructor(filePath: String) {
+    constructor() {
         this.filePath = filePath
         loadFromFile()
     }
@@ -33,17 +33,16 @@ class Student_list_YAML : Student_Strategy<Student>{
                     studentMap["telegram"]?.toString(),
                     studentMap["email"]?.toString(),
                     studentMap["github"]?.toString()
-                ))
+                ).apply { id = studentMap["id"]?.toString()?.toIntOrNull() ?: 0 })
             }
         } catch (e: FileNotFoundException) {
-            println("Файл не найден: ${e.message}")
+            println("Р¤Р°Р№Р» РЅРµ РЅР°Р№РґРµРЅ: ${e.message}")
         } catch (e: IOException) {
-            println("Ошибка чтения файла: ${e.message}")
+            println("РћС€РёР±РєР° С‡С‚РµРЅРёСЏ С„Р°Р№Р»Р°: ${e.message}")
         } catch (e: Exception) {
-            println("Ошибка при загрузке данных: ${e.message}")
+            println("РћС€РёР±РєР° РїСЂРё Р·Р°РіСЂСѓР·РєРµ РґР°РЅРЅС‹С…: ${e.message}")
         }
     }
-
 
     fun saveToFile() {
         val file = File(filePath)
@@ -65,58 +64,25 @@ class Student_list_YAML : Student_Strategy<Student>{
         file.writeText(yaml.dump(data))
     }
 
-    fun getStudentById(id: Int): Student? {
-        return students.find { it.id == id }
-    }
-
-    fun get_k_n_student_short_list(k: Int, n: Int): Data_table {
-        val shortList = students.drop((k - 1) * n).take(n).map { student ->
-            listOf(student.lastName, student.firstName, student.middleName)
-        }
-        return Data_table(shortList)
-    }
-
-    fun sortStudents() {
-        students.sortWith(compareBy(
-            { it.lastName },
-            { it.firstName[0] },
-            { it.middleName.takeIf { it.isNotEmpty() }?.get(0) ?: ' ' }
-        ))
-    }
-
-    override fun addStudent(student: Student) {
-        val castStudent = student as Student
-        castStudent.id = ++StudentInfo.id_student
-        students.add(castStudent)
-    }
-
-    fun replaceStudentById(id: Int, student: Student) {
-        val index = students.indexOfFirst { it.id == id }
-        if (index >= 0) {
-            students[index] = student.apply { this.id = id } // Устанавливаем ID для нового студента
-        }
-    }
-
-    fun removeStudentById(id: Int) {
-        students.removeIf { it.id == id }
-    }
-
-    fun get_student_short_count(): Int {
-        return students.size
-    }
-
     override fun loadStudents(): List<Student> {
         return students
     }
 
-    override fun saveStudents(students: List<Any>) {
+    override fun saveStudents(students: List<Student>) {
         this.students.clear()
-        this.students.addAll(students.map { it as Student })
+        this.students.addAll(students)
+        saveToFile()
+    }
+
+    override fun addStudent(student: Student) {
+        val castStudent = student.apply { id = ++StudentInfo.id_student }
+        students.add(castStudent)
         saveToFile()
     }
 
     override fun removeStudent(id: Int) {
         students.removeIf { it.id == id }
+        saveToFile()
     }
 
     override fun updateStudent(id: Int, student: Student) {
@@ -124,6 +90,6 @@ class Student_list_YAML : Student_Strategy<Student>{
         if (index >= 0) {
             students[index] = student.apply { this.id = id }
         }
+        saveToFile()
     }
-
 }
