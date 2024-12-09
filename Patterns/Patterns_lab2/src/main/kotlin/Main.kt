@@ -1,82 +1,31 @@
 import main.kotlin.*
-import main.kotlin.Student_list_YAML
-import main.kotlin.JsonStudentStorageStrategy
 import main.kotlin.Student_list_txt
+import main.kotlin.StudentManager
 
 fun main() {
-    // Работа с YAML файлом
-    val yamlStudents = Student_list_YAML("students.yaml")
+      val manager = StudentManager(Student_list_txt())
+//    val student_txt = Student("РџРµС‚СЂРѕРІ", "РРІР°РЅ", "РРІР°РЅРѕРІРёС‡", "1234567890", null, null, null)
+//    manager.addStudent(student_txt)
+//    println("РЎС‚СѓРґРµРЅС‚С‹ РёР· TXT: ")
+//    manager.loadStudents().forEach { println(it) }
+//
+//    print("\n")
+//    manager.setStrategy(JsonStudentStorageStrategy())
+//    val student_json = Student("РџРµС‚СЂРѕРІ", "РџС‘С‚СЂ", "РџРµС‚СЂРѕРІРёС‡", "0987654321", null, null, null)
+//    manager.addStudent(student_json)
+//    println("РЎС‚СѓРґРµРЅС‚С‹ РёР· JSON:")
+//    manager.loadStudents().forEach { println(it) }
+//
+//    print("\n")
+    manager.setStrategy(Student_list_YAML())
+//    val student_yaml = Student("РЎРёРґРѕСЂРѕРІ", "РџС‘С‚СЂ", "РџРµС‚СЂРѕРІРёС‡", "0987654321", null, "sidor_pp@mail.ru", null)
+//    manager.addStudent(student_yaml)
+//    println("РЎС‚СѓРґРµРЅС‚С‹ РёР· YAML:")
+//    manager.loadStudents().forEach { println(it) }
 
-    println("Студенты из YAML:")
-    yamlStudents.students.forEach { println(it) }
-
-    // Добавление нового студента в YAML
-    val student_yaml = Student("Иванов", "Иван", "Иванович", "1234567890", null, null, null)
-    student_yaml.id = 1
-    yamlStudents.addStudent(student_yaml)
-
-
-    // Сохранение изменений в YAML
-    yamlStudents.saveToFile()
-
-    println("\n")
-
-    // Работа с JSON файлом
-    val jsonStrategy = JsonStudentStorageStrategy()
-    val jsonManager = StudentManager(jsonStrategy)
-
-    println("Студенты из JSON:")
-    jsonManager.loadStudents().forEach { println(it) }
-
-    // Добавление нового студента в JSON
-    jsonManager.addStudent(Student_list_json(1, "Петров", "Пётр", "Петрович", "0987654321", null, null, null))
-
-    println("\n")
-
-    // Работа с TXT файлом
-    val txtStudents = Student_list_txt()
-
-    println("Студенты из TXT:")
-    txtStudents.loadStudents().forEach { println(it) }
-
-    // Добавление нового студента в TXT
-    val student_txt = Student("Иванов", "Иван", "Иванович", "1234567890", null, null, null)
-    student_txt.id = 1
-    yamlStudents.addStudent(student_txt)
-
-    println("\n")
-
-    // Демонстрация дополнительных функций YAML
-    println("Студент по ID из YAML:")
-    yamlStudents.getStudentById(1)?.let { println(it) }
-
-    println("\nСтраница 1 из 2 студентов в YAML:")
-    val shortList = yamlStudents.get_k_n_student_short_list(1, 2)
-    shortList.data.forEach { println(it.joinToString(", ")) }
-
-    println("\nСортировка студентов в YAML:")
-    yamlStudents.sortStudents()
-    yamlStudents.students.forEach { println(it) }
-
-    println("\nКоличество студентов в YAML:")
-    println(yamlStudents.get_student_short_count())
-
-    println("\nОбновление студента в YAML:")
-    val updatedStudent = Student(
-        // ID
-        "Иванов", // Фамилия
-        "Иван", // Имя
-        "Иванович", // Отчество
-        "1234567890", // Телефон
-        "ivanov_ii@university.ru", // E-mail (обновлено)
-        null, // Telegram (оставляем null)
-        null // GitHub (оставляем null)
-    )
-    yamlStudents.updateStudent(1, updatedStudent)
-    yamlStudents.students.forEach { println(it) }
-
-
-    println("\nУдаление студента из YAML:")
-    yamlStudents.removeStudentById(1)
-    yamlStudents.students.forEach { println(it) }
+    val student_yaml_upd = Student("РЎРёРґРѕСЂРѕРІ", "РџС‘С‚СЂ", "РњР°РєСЃРёРјРѕРІРёС‡", "0987654321", "@sidmaks", "sidor_pp@mail.ru", null)
+    manager.updateStudent(2, student_yaml_upd)
+    print("\n")
+    println("РћР±РЅРѕРІР»РµРЅРёРµ СЃС‚СѓРґРµРЅС‚Р° РёР· YAML:")
+    manager.loadStudents().forEach { println(it) }
 }
