@@ -2,13 +2,12 @@ package main.kotlin
 
 import java.io.File
 
-class Student_list_txt : Student_Strategy<Student> {
+class Student_list_txt : StudentManager.Student_Strategy {
     private val filePath = "Student_txt_superclass.txt"
 
     override fun loadStudents(): List<Student> {
         return File(filePath).readLines().mapNotNull { line ->
             try {
-                // Assuming Student constructor takes id, name, and age
                 val fields = line.split(',')
                 if (fields.size >= 3) {
                     Student(fields[0], fields[1], fields[2])
@@ -22,12 +21,12 @@ class Student_list_txt : Student_Strategy<Student> {
         }
     }
 
-    override fun saveStudents(students: List<Any>) {
-        File(filePath).writeText(students.joinToString("\n"))
+    override fun saveStudents(students: List<Student>) {
+        File(filePath).writeText(students.joinToString("\n") { "${it.id},${it.lastName},${it.firstName}" })
     }
 
     override fun addStudent(student: Student) {
-        File(filePath).appendText("\n${student.toString()}")
+        File(filePath).appendText("\n${student.id},${student.lastName},${student.firstName}")
     }
 
     override fun removeStudent(id: Int) {
@@ -43,5 +42,3 @@ class Student_list_txt : Student_Strategy<Student> {
         saveStudents(students)
     }
 }
-
-
