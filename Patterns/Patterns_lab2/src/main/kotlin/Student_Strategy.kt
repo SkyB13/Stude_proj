@@ -1,17 +1,50 @@
 package main.kotlin
 
-interface Student_Strategy<T : Any> {
-    fun loadStudents(): List<T>
-    fun saveStudents(students: List<Any>)
-    fun addStudent(student: T)
-    fun removeStudent(id: Int)
-    fun updateStudent(id: Int, student: T)
-}
+class StudentManager(private var strategy: Student_Strategy) {
 
-class StudentManager<T : Any>(private val strategy: Student_Strategy<T>) {
-    fun loadStudents(): List<T> = strategy.loadStudents()
-    fun saveStudents(students: List<T>) = strategy.saveStudents(students)
-    fun addStudent(student: T) = strategy.addStudent(student)
-    fun removeStudent(id: Int) = strategy.removeStudent(id)
-    fun updateStudent(id: Int, student: T) = strategy.updateStudent(id, student)
+    interface Student_Strategy {
+        fun loadStudents(): List<Student>
+        fun saveStudents(students: List<Student>)
+        fun addStudent(student: Student)
+        fun removeStudent(id: Int)
+        fun updateStudent(id: Int, student: Student)
+    }
+
+    fun setStrategy(strategy: Student_Strategy) {
+        this.strategy = strategy
+    }
+
+    fun loadStudents(): List<Student> {
+        return strategy.loadStudents()
+    }
+
+    fun saveStudents(students: List<Student>) {
+        strategy.saveStudents(students)
+    }
+
+    fun addStudent(student: Student) {
+        strategy.addStudent(student)
+    }
+
+    fun removeStudent(id: Int) {
+        strategy.removeStudent(id)
+    }
+
+    fun updateStudent(id: Int, student: Student) {
+        strategy.updateStudent(id, student)
+    }
+
+    companion object {
+        fun createJsonStrategy(): Student_Strategy {
+            return JsonStudentStorageStrategy()
+        }
+
+        fun createTxtStrategy(): Student_Strategy {
+            return Student_list_txt()
+        }
+
+        fun createYamlStrategy(): Student_Strategy {
+            return Student_list_YAML()
+        }
+    }
 }
