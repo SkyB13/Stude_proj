@@ -1,0 +1,8 @@
+ID: 2
+Фамилия: Петрова
+Имя: Анна
+Отчество: Сергеевна
+Телефон: +79001234568
+Telegram: @petrov
+E-mail: petrova@mail.ru
+GitHub: https://github.com/petrova

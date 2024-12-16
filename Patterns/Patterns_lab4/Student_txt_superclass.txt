@@ -1,0 +1,1 @@
+[{"lastName":"Петров","firstName":"Иван","middleName":"Сергеевич","phone":"+79001234567","telegram":"@petrov","email":"petrov@example.com","id":2,"git":"https://github.com/petrov"}]
